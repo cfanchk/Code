@@ -1,4 +1,5 @@
-function [ind,crit,label]=judge(centroids,diffArray,dist)
+% 判断最优聚类数函数,ind为最优聚类数,crit为比值,label为距离小于阈值的点对数
+function [ind,crit,label]=sub_judge(centroids,diffArray,dist)
 
 len=size(centroids,1);
 label=zeros(1,len);
@@ -29,10 +30,10 @@ else
     bd=diffArray(ind-1)-diffArray(ind);
     fd=diffArray(ind)-diffArray(ind+1);
     crit=abs(bd/fd);
-        if(bd>0&&fd<0||crit>=5)
-            break;
-        else
-            ind=ind-1;
-        end
+    if(bd>0&&fd<0||crit>=5)
+        break;
+    else
+        ind=ind-1;
+    end
     end
 end

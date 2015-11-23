@@ -41,7 +41,7 @@
 % March 2002    - original version
 % December 2002 - updated comments
 
-function [cim, r, c] = harris(im, sigma, thresh, radius, disp)
+function [cim, r, c] = sub_Harris(im, sigma, thresh, radius, disp)
     
     narginchk(2,5);
     

@@ -3,7 +3,7 @@ clear;
 close all;
 
 %读取图像
-ima1=imread('D:\temp.png');
+ima1=imread('D:\009.png');
 if(numel(size(ima1))>2)
     image=rgb2gray(ima1);
 else
@@ -17,7 +17,7 @@ idx=cell(1,15-1+1);
 
 %半径1至15进行CFF
 for radius=1:15
-    CFF(:,:,radius)=Circle(image,radius,gamma);
+    CFF(:,:,radius)=sub_Circle(image,radius,gamma);
 end
 
 for radius=1:15
@@ -53,7 +53,7 @@ for radius=1:15
     diffArray=tempArray-withArray;          %类内距离差分向量
     diffArray=diffArray(2:len);
 
-    [core,~,label]=judge(centroids,diffArray,dist);  %得到最优聚类数core
+    [core,~,label]=sub_judge(centroids,diffArray,dist);  %得到最优聚类数core
     
     if(core==0)
         continue;

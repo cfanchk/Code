@@ -1,3 +1,4 @@
+% 最新代码
 clc;
 clear;
 close all;
@@ -134,7 +135,7 @@ W=BF(3:258,3:322);
 W=W|Y;
 % figure(5),imshow(W),title('第二次生长');
 
-[cim, r, c] = Harris(W.*255, 2, 1000, 1, 0);
+[cim, r, c] = sub_Harris(W.*255, 2, 1000, 1, 0);
 % figure(6),imshow(cim),title('角点图1');
 
 %%%%%%%%%%%
@@ -148,7 +149,7 @@ W=W|Y;
 %%%%%%%%%%%%%%%%%%
 
 [height, width]=size(W);
-[bh, bv]=anna_phogCal(image,bin,angle,L);
+[bh, bv]=sub_phogCal(image,bin,angle,L);
 
 %对角点图进行滑窗检测
 str='D:\result\';
@@ -158,7 +159,7 @@ for i=1:g:width-f
         roi = [j;f+j;i;f+i];
         numbers=length(find(cim(roi(1,1):roi(2,1),roi(3,1):roi(4,1))));
         while (numbers>=h&&numbers<=h+8)
-            p = anna_phogFeature(bh,bv,L,roi,bin);
+            p = sub_phogFeature(bh,bv,L,roi,bin);
             testlabel=1;
             testdata=p;
             [predicted_label, accuracy, decision_values]=svmpredict(testlabel,testdata',svmStruct);   

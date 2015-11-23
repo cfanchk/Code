@@ -1,5 +1,5 @@
-function p = anna_PhogDescriptor(bh,bv,L,bin)
-% anna_PHOGDESCRIPTOR Computes Pyramid Histogram of Oriented Gradient over a ROI.
+function p = sub_phogDescriptor(bh,bv,L,bin)
+% sub_PHOGDESCRIPTOR Computes Pyramid Histogram of Oriented Gradient over a ROI.
 %               
 %IN:
 %	bh - matrix of bin histogram values

@@ -1,4 +1,4 @@
-function [CFF,thre]=Circle(image,r,threshold)
+function [CFF,thre]=sub_Circle(image,r,threshold)
 
 bin=32;
 theta=linspace(0,2*pi,bin);

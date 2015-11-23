@@ -1,4 +1,5 @@
-function CFF=Circle(image,r,threshold)
+% 圆周频率滤波函数,r为半径,threshold为阈值
+function CFF=sub_Circle(image,r,threshold)
 
 bin=32;
 theta=linspace(0,2*pi,bin);
@@ -31,3 +32,4 @@ CFF(CFF(:)<=threshold)=0;
 % CFF(CFF(:)~=0)=1;
 % figure,imshow(CFF);
 % title(r);
+end

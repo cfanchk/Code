@@ -1,5 +1,5 @@
-function [bm bv] = anna_BinMatrix(A,E,G,angle,bin)
-% anna_BINMATRIX Computes a Matrix (bm) with the same size of the image where
+function [bm bv] = sub_binMatrix(A,E,G,angle,bin)
+% sub_BINMATRIX Computes a Matrix (bm) with the same size of the image where
 % (i,j) position contains the histogram value for the pixel at position (i,j)
 % and another matrix (bv) where the position (i,j) contains the gradient
 % value for the pixel at position (i,j)

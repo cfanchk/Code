@@ -1,3 +1,4 @@
+% ¾É´úÂë£¬ÎÞHarris½Çµã
 clc;
 clear;
 close all;
@@ -24,7 +25,7 @@ grayimage=rgb2gray(RGB);
 bin = 9;
 angle = 360;
 L=3;
-[bh, bv]=anna_phogCal(RGB,bin,angle,L);
+[bh, bv]=sub_phogCal(RGB,bin,angle,L);
 
 str='D:\result\';
 k=1;
@@ -39,7 +40,7 @@ for i=10:3:width-15
     for j=10:3:height-15
 %         if(tabo(i,j)==0)
             roi = [j;14+j;i;14+i];
-            p = anna_phogFeature(bh,bv,L,roi,bin);
+            p = sub_phogFeature(bh,bv,L,roi,bin);
             testlabel=1;
             testdata=p;
             [predicted_label, accuracy, decision_values]=svmpredict(testlabel,testdata',svmStruct);   

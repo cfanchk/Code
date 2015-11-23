@@ -1,4 +1,4 @@
-function [ind,crit,label]=judge(centroids,diffArray,dist)
+function [ind,crit,label]=sub_judge(centroids,diffArray,dist)
 
 len=size(centroids,1);
 label=zeros(1,len);

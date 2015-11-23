@@ -1,3 +1,4 @@
+%静默批处理，不弹出图片框
 clc;
 clear;
 close all;
@@ -26,7 +27,7 @@ for loops=1:num
     idx=cell(1,15-1+1);
 
     for radius=1:15
-        CFF(:,:,radius)=Circle(image,radius,gamma);
+        CFF(:,:,radius)=sub_Circle(image,radius,gamma);
     end
 
     for radius=1:15
@@ -62,7 +63,7 @@ for loops=1:num
         diffArray=tempArray-withArray;
         diffArray=diffArray(2:len);
 
-        [core,~,label]=judge(centroids,diffArray,dist);
+        [core,~,label]=sub_judge(centroids,diffArray,dist);
     
         if(core==0)
             continue;

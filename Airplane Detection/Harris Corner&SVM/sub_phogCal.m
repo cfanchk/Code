@@ -1,7 +1,7 @@
-function p = anna_phog(Img,bin,angle,L,roi)
-% anna_PHOG Computes Pyramid Histogram of Oriented Gradient over a ROI.
+function [bh bv] = sub_phogCal(Img,bin,angle,L)
+% sub_PHOG Computes Pyramid Histogram of Oriented Gradient over a ROI.
 %               
-% [BH, BV] = anna_PHOG(I,BIN,ANGLE,L,ROI) computes phog descriptor over a ROI.
+% [BH, BV] = sub_PHOG(I,BIN,ANGLE,L,ROI) computes phog descriptor over a ROI.
 % 
 % Given and image I, phog computes the Pyramid Histogram of Oriented Gradients
 % over L pyramid levels and over a Region Of Interest
@@ -40,14 +40,8 @@ if sum(sum(G))>100
     if angle == 180, A = ((atan(YX)+(pi/2))*180)/pi; end
     if angle == 360, A = ((atan2(GradientY,GradientX)+pi)*180)/pi; end
                                 
-    [bh bv] = anna_binMatrix(A,E,Gr,angle,bin);
+    [bh bv] = sub_binMatrix(A,E,Gr,angle,bin);
 else
     bh = zeros(size(I,1),size(I,2));
     bv = zeros(size(I,1),size(I,2));
 end
-
-bh_roi = bh(roi(1,1):roi(2,1),roi(3,1):roi(4,1));
-bv_roi = bv(roi(1,1):roi(2,1),roi(3,1):roi(4,1));
-p = anna_phogDescriptor(bh_roi,bv_roi,L,bin);
-%s = sprintf('%s.txt',I);
-%dlmwrite('.\Traindata\20\T1.text',p);
