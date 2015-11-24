@@ -1,20 +1,11 @@
-function SortArray=MergeSort(Array,p,r)
-% if nargin==1
-%     p=1;
-%     r=length(Array);
-% elseif r>length(Array)
-%     disp('Invalid Input Format!');
-%     SortArray=[];
-%     return;
-% end
-
+function Array=MergeSort(Array,p,r)
 if p<r
     q=floor((p+r)/2);
     sort1=MergeSort(Array,p,q);
     sort2=MergeSort(Array,q+1,r);
-    SortArray=Merge(sort1,sort2);
+    Array=Merge(sort1,sort2);
 else
-    SortArray=Array(p);
+    Array=Array(p);
 end
 end
 

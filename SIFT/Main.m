@@ -7,7 +7,7 @@ if (numel(size(I))>2)
     I=rgb2gray(I);
 end
 
-DoGImg=sub_DoG(I,7,1);
+DoGImg=sub_DoG(I,8,2);
 num=size(DoGImg,3)/2;
 for i=1:num
     figure;imshow(I);
