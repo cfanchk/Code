@@ -1,11 +1,12 @@
-function Array=MergeSort(Array,p,r)
+% 归并排序，p,r为待排序数组下标，非原址
+function SortArray=MergeSort(Array,p,r)
 if p<r
     q=floor((p+r)/2);
-    sort1=MergeSort(Array,p,q);
-    sort2=MergeSort(Array,q+1,r);
-    Array=Merge(sort1,sort2);
+    part1=MergeSort(Array,p,q);
+    part2=MergeSort(Array,q+1,r);
+    SortArray=Merge(part1,part2);
 else
-    Array=Array(p);
+    SortArray=Array(p);
 end
 end
 

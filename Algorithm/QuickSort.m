@@ -1,3 +1,4 @@
+% 快速排序，p,r为待排序数组下标，原址
 function Array=QuickSort(Array,p,r)
 if p<r
     [Array,q]=sub_ranPartition(Array,p,r);
