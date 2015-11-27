@@ -7,6 +7,7 @@ MinDScale=zeros(r,c,S+2);
 Maxima=zeros(r,c,S+2);
 Minima=zeros(r,c,S+2);
 DoGCorner=zeros(r,c,S);
+boundaryzero=zeros(r,c);
 
 for i=1:S+2
     DScaleImg=DoGValueAll(:,:,i);
@@ -17,6 +18,9 @@ for i=1:S+2
 end
 
 for i=1:S
-    DoGCorner(:,:,i)=Maxima(:,:,i+1) & MaxDScale(:,:,i+1)>MaxDScale(:,:,i) & MaxDScale(:,:,i+1)>MaxDScale(:,:,i+2) |...
+    tempDoGCorner=Maxima(:,:,i+1) & MaxDScale(:,:,i+1)>MaxDScale(:,:,i) & MaxDScale(:,:,i+1)>MaxDScale(:,:,i+2) |...
         Minima(:,:,i+1) & MinDScale(:,:,i+1)<MinDScale(:,:,i) & MinDScale(:,:,i+1)<MinDScale(:,:,i+2);
+    boundaryzero(2:end-1,2:end-1)=tempDoGCorner(2:end-1,2:end-1);
+    DoGCorner(:,:,i)=boundaryzero;
+end
 end

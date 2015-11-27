@@ -1,5 +1,6 @@
 function [DoGCorner,DoGValue]=sub_DoG(I,S,sigma)
 I=double(I);
+% I=I./255;
 [r,c]=size(I);
 k=2^(1/S);
 

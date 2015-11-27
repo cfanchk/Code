@@ -2,14 +2,16 @@ clc;
 clear;
 close all;
 
-I=imread('D:\009.png');
+S=3;
+sigma=1.6;
+
+I=imread('D:\demo.jpg');
 if (numel(size(I))>2)
     I=rgb2gray(I);
 end
 
-S=3;
-sigma=1.6;
 [DoGCorner,DoGValue]=sub_DoG(I,S,sigma);
+DoGCorner=sub_AccLocalization(DoGCorner,DoGValue,S);
 OctaveNum=size(DoGCorner,2);
 for i=1:OctaveNum
     [r,c]=size(I);
