@@ -3,7 +3,7 @@ function [A,minima]=op_ExtractMin(A)
 heapsize=length(A);
 if heapsize<1
     disp('Error:Heap underflow!');
-    minima=[];
+    minima=NaN;
     return;
 end
 minima=A(1);
