@@ -21,7 +21,7 @@ for i=1:OctaveNum
             DoGValueAll(:,:,j-1)=ScaleImg(:,:,j)-ScaleImg(:,:,j-1);
         end
     end
-    DoGCorner{1,i}=sub_NMS(DoGValueAll,S);
-    DoGValue{1,i}=DoGValueAll(:,:,2:S+1);
+    DoGCorner{i}=sub_NMS(DoGValueAll,S);
+    DoGValue{i}=DoGValueAll(:,:,2:S+1);
     I=imresize(ScaleImg(:,:,S+1),[floor(r/2) floor(c/2)]);
 end

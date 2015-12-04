@@ -5,13 +5,17 @@ close all;
 S=3;
 sigma=1.6;
 
-I=imread('D:\demo.jpg');
+I=imread('D:\lena.jpg');
 if (numel(size(I))>2)
     I=rgb2gray(I);
 end
 
 [DoGCorner,DoGValue]=sub_DoG(I,S,sigma);
-DoGCorner=sub_AccLocalization(DoGCorner,DoGValue,S);
+DoGCorner=sub_AccLocalization(DoGCorner,DoGValue);
+Ipoint=sub_formatConv(DoGCorner);
+DoGOri=sub_OriAssignment(Ipoint,I,sigma);
+
+
 OctaveNum=size(DoGCorner,2);
 for i=1:OctaveNum
     [r,c]=size(I);
