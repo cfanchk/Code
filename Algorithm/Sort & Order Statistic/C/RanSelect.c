@@ -13,7 +13,7 @@ int sub_partition(int* A, int p, int r)
 			*(A + j) = temp;
 		}
 	temp = *(A + i + 1);
-	*(A + i + 1) = *(A + r -1);
+	*(A + i + 1) = *(A + r - 1);
 	*(A + r - 1) = temp;
 	int q = i + 1;
 	return q;
@@ -31,12 +31,22 @@ int sub_ranPartition(int* A, int p, int r)
 	return q;
 }
 
-void QuickSort(int* A, int p, int r)
+int RanSelect(int* A, int p, int r, int i)
 {
-	if (p < r)
+	int num;
+	if (p == r)
 	{
-		int q = sub_ranPartition(A, p, r) + 1;
-		QuickSort(A, p, q - 1);
-		QuickSort(A, q + 1, r);
+		num = *(A + p - 1);
+		return num;
 	}
+	int q = sub_ranPartition(A, p, r) + 1;
+	int k = q - p + 1;
+
+	if (i == k)
+		num = *(A + q - 1);
+	else if (i < k)
+		num = RanSelect(A, p, q - 1, i);
+	else
+		num = RanSelect(A, q + 1, r, i - k);
+	return num;
 }

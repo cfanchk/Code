@@ -1,8 +1,8 @@
-void InsortionSort(int* A, int len)
+void InsortionSort(int* A, int arraysize)
 {
 	int i, j;
 	int key;
-	for (j = 1; j < len; j++)
+	for (j = 1; j < arraysize; j++)
 	{
 		key = *(A + j);
 		i = j - 1;
