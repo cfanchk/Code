@@ -6,6 +6,8 @@ class Node
 {
 public:
 	Node(int = 0, Node* = NULL, Node* = NULL);
+	Node(const Node&);
+	Node& operator=(const Node&);
 	void setKey(int);
 	int getKey();
 	void setPrev(Node*);
@@ -23,8 +25,9 @@ class LinkedList
 {
 public:
 	LinkedList();
+	~LinkedList();
 	Node* Search(int);
-	void Insert(Node*);
+	void Insert(const Node&);
 	void Delete(int);
 	void visitAll();
 private:

@@ -1,4 +1,5 @@
 //队列结构的数组实现
+//采用异常处理，抛出0为下溢，1为上溢，程序中应使用try,catch语句
 #include <iostream>
 
 //节点类
@@ -7,8 +8,7 @@ class Node
 public:
 	Node();
 	Node(int);
-	void setKey(int);
-	int getKey();
+	Node& operator=(const Node&);
 private:
 	int key;
 };
@@ -19,11 +19,10 @@ class Queue
 public:
 	Queue(int);
 	~Queue();
-	Node* Dequeue();
-	void Enqueue(Node*);
+	Node& Dequeue();
+	void Enqueue(const Node&);
 	bool isEmpty();
 	bool isFull();
-	void sub_copy(Node*);
 private:
 	int arraysize;
 	Node* queuepoint;

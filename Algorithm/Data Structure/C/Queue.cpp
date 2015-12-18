@@ -4,10 +4,12 @@ Node::Node() : key(0){}
 
 Node::Node(int k) : key(k){}
 
-//若节点需添加其他结构成员，需添加相应的set与get
-void Node::setKey(int k){ key = k; }
-
-int Node::getKey(){ return key; }
+//=操作符重载，若有其他结构成员利用memcpy等命令进行深拷贝
+Node& Node::operator=(const Node& node)
+{
+	key = node.key;
+	return *this;
+}
 
 //建队列操作
 Queue::Queue(int queuesize)
@@ -21,40 +23,28 @@ Queue::Queue(int queuesize)
 Queue::~Queue(){ delete[] queuepoint; }
 
 //元素出队操作
-Node* Queue::Dequeue()
+Node& Queue::Dequeue()
 {
 	if (isEmpty())
-	{
-		std::cerr << "Error:Queue underflow!" << std::endl;
-		return NULL;
-	}
+		throw 0;
 	int temp = head;
 	if (head == arraysize - 1)
 		head = 0;
 	else
 		head++;
-	return queuepoint + temp;
+	return *(queuepoint + temp);
 }
 
 //元素入队操作
-void Queue::Enqueue(Node* node)
+void Queue::Enqueue(const Node& node)
 {
 	if (isFull())
-	{
-		std::cerr << "Error:Queue overflow!" << std::endl;
-		return;
-	}
-	sub_copy(node);
+		throw 1;
+	*(queuepoint + tail) = node;
 	if (tail == arraysize - 1)
 		tail = 0;
 	else
 		tail++;
-}
-
-//节点信息复制操作，若有其他结构成员需利用相应的set与get操作进行复制（注意深拷贝）
-void Queue::sub_copy(Node* node)
-{
-	(queuepoint + tail)->setKey(node->getKey());
 }
 
 bool Queue::isEmpty(){ return head == tail; }
