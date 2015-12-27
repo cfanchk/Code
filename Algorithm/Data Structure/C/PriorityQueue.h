@@ -6,8 +6,7 @@
 class Node
 {
 public:
-	Node();
-	Node(int);
+	Node(int = 0);
 	Node(const Node&);
 	Node& operator=(const Node&);
 	void setKey(int);

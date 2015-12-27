@@ -6,12 +6,16 @@ Node::Node(int k, Node* p, Node* n) : key(k), prev(p), next(n){}
 Node::Node(const Node& node)
 {
 	key = node.key;
+	prev = node.prev;
+	next = node.next;
 }
 
 //=操作符重载，若有其他结构成员，利用new操作符分配空间并使用memcpy等命令进行深拷贝
 Node& Node::operator=(const Node& node)
 {
 	key = node.key;
+	prev = node.prev;
+	next = node.next;
 	return *this;
 }
 
@@ -42,17 +46,19 @@ LinkedList::~LinkedList()
 	}
 }
 
-//查询元素操作，返回链表对应元素指针s
-Node* LinkedList::Search(int k)
+//查询元素操作
+Node& LinkedList::Search(int k)
 {
 	Node* s = head;
 	while (s != NULL && s->getKey() != k)
 		s = s->getNext();
-	return s;
+	if (s == NULL)
+		throw 0;
+	return *s;
 }
 
-//插入元素键值操作
-void LinkedList::Insert(const Node& node)
+//插入元素操作
+void LinkedList::Insert(Node& node)
 {
 	Node* n=new Node(node);
 	n->setNext(head);
@@ -62,15 +68,10 @@ void LinkedList::Insert(const Node& node)
 	n->setPrev(NULL);
 }
 
-//删除元素键值操作
-void LinkedList::Delete(int k)
+//删除元素操作
+void LinkedList::Delete(int key)
 {
-	Node* s = Search(k);
-	if (s == NULL)
-	{
-		std::cerr << "No Such Element!" << std::endl;
-		return;
-	}
+	Node* s = &(Search(key));
 	if (s->getPrev() != NULL)
 		s->getPrev()->setNext(s->getNext());
 	else

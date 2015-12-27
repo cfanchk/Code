@@ -1,7 +1,5 @@
 #include "PriorityQueue.h"
 
-Node::Node() :key(0){}
-
 Node::Node(int k) : key(k){}
 
 //拷贝构造函数，若有其他结构成员，使用memcpy等命令进行深拷贝
