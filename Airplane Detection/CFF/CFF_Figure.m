@@ -3,7 +3,7 @@ clear;
 close all;
 
 %读取图像
-ima1=imread('D:\temp.png');
+ima1=imread('D:\test.png');
 if(numel(size(ima1))>2)
     image=rgb2gray(ima1);
 else
@@ -11,12 +11,10 @@ else
 end
 
 gamma=0.65;
-result=zeros(15-1+1,2);
-idx=cell(1,15-1+1);
 figure;imshow(image);
 
 radius=7;
-CFF=Circle(image,radius,gamma);
+CFF=sub_Circle(image,radius,gamma);
 [r,c,v]=find(CFF);
 coor=[r,c];
 dist=pdist2(coor,coor);
@@ -52,7 +50,7 @@ tempArray=[0,withArray(1:cNumMax)];
 diffArray=tempArray-withArray;
 diffArray=diffArray(2:len);
 clearvars tempArray;
-[core,~,label]=judge(centroids,diffArray,dist);
+[core,~,label]=sub_judge(centroids,diffArray,dist);
 
 inds=cluster(clustTreeEuc,'maxclust',core);
 cidx=zeros(1,core);
@@ -70,9 +68,7 @@ for i=1:core
     cidx(i)=temparr(tempind);
 end
 
-weight=mean(within./clusternum);
 clearvars tempind temparr;
 
 scatter(c(cidx),r(cidx),'r+');
-title(['半径',num2str(radius),'    最佳聚类数:',num2str(core),'    权值：',num2str(withArray(weight))]);
-result(radius,:)=[core,withArray(core)];
+title(['半径',num2str(radius),'    最佳聚类数:',num2str(core)]);

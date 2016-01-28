@@ -3,7 +3,7 @@ clear;
 close all;
 
 %¶ÁÈ¡Í¼Ïñ
-ima1=imread('D:\temp.png');
+ima1=imread('D:\test.png');
 if(numel(size(ima1))>2)
     image=rgb2gray(ima1);
 else
@@ -15,7 +15,7 @@ result=zeros(15-1+1,2);
 idx=cell(1,15-1+1);
 
 radius=5;
-CFF=Circle(image,radius,gamma);
+CFF=sub_Circle(image,radius,gamma);
 [r,c,v]=find(CFF);
 coor=[r,c];
 dist=pdist2(coor,coor);
@@ -50,6 +50,7 @@ len=size(centroids,1);
 tempArray=[0,withArray(1:cNumMax)];
 diffArray=tempArray-withArray;
 withArray=withArray(1:len);
+
 diffArray=diffArray(2:len);
 clearvars tempArray;
 
