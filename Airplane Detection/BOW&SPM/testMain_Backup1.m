@@ -1,15 +1,16 @@
-%测试阶段代码备份，当前testMain代码存在重复计算问题
+%测试阶段代码备份1，此代码无法检出目标，经检查为采样点错位导致的
 clc;clear;close all;
 
 %% Initialization
 % addpath BOW;
-rootpath='C:/Users/tiger/Documents/MATLAB/Wu Code/';
+rootpath='C:/Users/tiger/Documents/MATLAB/BOW&SPM/';
 globaldatapath=sprintf('%sdata/global',rootpath);
 load([globaldatapath,'/SVMModel'],'model');
 load([globaldatapath,'/dessift_settings'],'descriptor_opts');
 load([globaldatapath,'/sift_dictionary'],'dictionary');
 
-gridSpacing = descriptor_opts.gridSpacing;
+% gridSpacing = descriptor_opts.gridSpacing;
+gridSpacing=1;
 patchSize = descriptor_opts.patchSize;
 dictionary_size = size(dictionary,1);
 

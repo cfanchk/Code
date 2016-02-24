@@ -1,19 +1,7 @@
-%% Script to perform BOW-based image classification demo
-% ========================================================================
-% Image Classification using Bag of Words and Spatial Pyramid BoW
-% Created by Piji Li (pagelee.sd@gmail.com)  
-% Blog: http://www.zhizhihu.com
-% Weibo: http://www.weibo.com/pagecn
-% IRLab. : http://ir.sdu.edu.cn     
-% Shandong University,Jinan,China
-% 10/24/2011
-
-%% initialize the settings
-clc;
-clear;
+%训练阶段代码
+clc;clear;
 ini;
 detect_opts=[];descriptor_opts=[];dictionary_opts=[];assignment_opts=[];ada_opts=[];
-
 
 %% Descriptors
 descriptor_opts.type='sift';                                                     % name descripto
@@ -24,7 +12,7 @@ descriptor_opts.maxImageSize=1000;
 GenerateSiftDescriptors(pg_opts,descriptor_opts);
 
 %% Create the texton dictionary
-dictionary_opts.dictionarySize = 30;
+dictionary_opts.dictionarySize = 10;
 dictionary_opts.name='sift_features';
 dictionary_opts.type='sift_dictionary';
 CalculateDictionary(pg_opts, dictionary_opts);
@@ -39,6 +27,7 @@ assignment_opts.featuretype=dictionary_opts.name;
 assignment_opts.texton_name='texton_ind';
 do_assignment(pg_opts,assignment_opts);
 
+% 飞机窗口较小，暂不需要SPM
 %% CompilePyramid
 % pyramid_opts.name='spatial_pyramid';
 % pyramid_opts.dictionarySize=dictionary_opts.dictionarySize;

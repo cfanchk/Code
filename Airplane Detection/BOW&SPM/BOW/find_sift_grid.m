@@ -1,3 +1,4 @@
+% 此程序在Backup2后经过了修改，25,26行替换为了27,28行，漏检是由卷积时边界计算导致的
 function sift_arr = find_sift_grid(I, grid_x, grid_y, patch_size, sigma_edge)
 
 % parameters
@@ -21,8 +22,10 @@ sift_arr = zeros(num_patches, num_samples * num_angles); %4*4*8=128
 
 [G_X,G_Y]=gen_dgauss(sigma_edge);
 
-I_X = filter2(G_X, I, 'same'); % vertical edges
-I_Y = filter2(G_Y, I, 'same'); % horizontal edges
+% I_X = filter2(G_X, I, 'same'); % vertical edges
+% I_Y = filter2(G_Y, I, 'same'); % horizontal edges
+I_X=imfilter(I,G_X,'replicate');
+I_Y=imfilter(I,G_Y,'replicate');
 I_mag = sqrt(I_X.^2 + I_Y.^2); % gradient magnitude
 
 I_theta = atan2(I_Y,I_X);

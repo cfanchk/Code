@@ -1,8 +1,8 @@
 %训练部分初始化相关路径
-rootpath='C:/Users/tiger/Documents/MATLAB/Wu Code/';
+rootpath='C:/Users/tiger/Documents/MATLAB/BOW&SPM/';
 
 %%
-% addpath BOW;
+addpath BOW;
 
 %% change these paths to point to the image, data and label location
 images_set=strcat(rootpath,'images');
