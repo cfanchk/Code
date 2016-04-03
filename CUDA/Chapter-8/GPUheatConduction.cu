@@ -1,5 +1,5 @@
 #include "../common/book.h"
-#include "../common/cpu_anim.h"
+#include "../common/gpu_anim.h"
 
 #define DIM 1024
 #define PI 3.1415926535897932f
@@ -16,7 +16,7 @@ struct DataBlock{
 	float* dev_inSrc;
 	float* dev_outSrc;
 	float* dev_constSrc;
-	CPUAnimBitmap* bitmap;
+	GPUAnimBitmap* bitmap;
 
 	cudaEvent_t start, stop;
 	float totalTime;
@@ -70,12 +70,12 @@ __global__ void copy_const_kernel(float* iptr)
 		iptr[offset] = c;
 }
 
-void anim_gpu(DataBlock* d, int ticks)
+void anim_gpu(uchar4* outputBitmap, DataBlock* d, int ticks)
 {
 	HANDLE_ERROR(cudaEventRecord(d->start, 0));
 	dim3 blocks(DIM/16, DIM/16);
 	dim3 threads(16, 16);
-	CPUAnimBitmap* bitmap = d->bitmap;
+	GPUAnimBitmap* bitmap = d->bitmap;
 
 	volatile bool dstOut = true;
 	for(int i=0; i<90; i++)
@@ -95,8 +95,7 @@ void anim_gpu(DataBlock* d, int ticks)
 		blend_kernel<<<blocks,threads>>>(out, dstOut);
 		dstOut = !dstOut;
 	}
-	float_to_color<<<blocks,threads>>>(d->output_bitmap, d->dev_inSrc);
-	HANDLE_ERROR(cudaMemcpy(bitmap->get_ptr(), d->output_bitmap, bitmap->image_size(), cudaMemcpyDeviceToHost));
+	float_to_color<<<blocks,threads>>>(outputBitmap, d->dev_inSrc);
 
 	HANDLE_ERROR(cudaEventRecord(d->stop, 0));
 	HANDLE_ERROR(cudaEventSynchronize(d->stop));
@@ -124,7 +123,7 @@ void anim_exit(DataBlock* d)
 int main()
 {
 	DataBlock data;
-	CPUAnimBitmap bitmap(DIM, DIM, &data);
+	GPUAnimBitmap bitmap(DIM, DIM, &data);
 	data.bitmap = &bitmap;
 	data.totalTime = 0;
 	data.frames = 0;
@@ -167,5 +166,5 @@ int main()
 
 	free(temp);
 
-	bitmap.anim_and_exit((void(*) (void*, int)) anim_gpu, (void(*) (void*)) anim_exit);
+	bitmap.anim_and_exit((void(*) (uchar4*, void*, int)) anim_gpu, (void(*) (void*)) anim_exit);
 }

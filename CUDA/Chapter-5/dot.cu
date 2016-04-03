@@ -1,4 +1,4 @@
-#include "book.h"
+#include "../common/book.h"
 
 #define imin(a, b) (a<b?a:b)
 #define sum_squares(x) (x*(x+1)*(2*x+1)/6)

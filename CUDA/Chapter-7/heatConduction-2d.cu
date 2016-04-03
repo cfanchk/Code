@@ -1,5 +1,5 @@
-#include "book.h"
-#include "cpu_anim.h"
+#include "../common/book.h"
+#include "../common/cpu_anim.h"
 
 #define DIM 1024
 #define PI 3.1415926535897932f
