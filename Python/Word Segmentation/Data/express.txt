@@ -1,0 +1,27 @@
+receive_by_person 您好，申通快递，小芳在么？
+receive_by_person 您好，韵达快递，小芳在么？
+receive_by_person 您好，京东快递，小芳在么？
+receive_by_person 您好，圆通快递，小芳在么？
+receive_by_person 您好，天猫快递，小芳在么？
+receive_by_person 您好，中通快递，小芳在么？
+receive_by_person 您好，天天快递，小芳在么？
+receive_by_person 您好，小红帽快递，小芳在么？
+receive_by_person 您好，EMS，小芳在么？
+receive_by_person 您好，德邦快递，小芳在么？
+receive_by_person 您好，全峰快递，小芳在么？
+receive_by_person 您好，优速快递，小芳在么？
+receive_by_person 您好，苏宁快递，小芳在么？
+
+
+
+receive_ask_person 有我的快递吗？
+receive_ask_person 有没有我的快递？
+receive_ask_person 我的快递到了么？
+receive_ask_person 能帮我查查有我的快递么？
+receive_ask_person 我还有快递没取么？
+receive_ask_person 今天有我的快递么？
+receive_ask_person 请帮我查一下有没有我的快递？
+receive_ask_person 请帮我查一下快递
+receive_ask_person 能帮我查一下有我的快递吗
+
+

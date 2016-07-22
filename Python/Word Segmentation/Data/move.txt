@@ -1,0 +1,65 @@
+move_by_direction_forward 向前走
+move_by_direction_forward 大步向前走
+move_by_direction_forward 小薇向前走
+move_by_direction_forward 大胆向前走
+move_by_direction_forward 笔直向前走
+move_by_direction_forward 向前走不回头
+move_by_direction_forward 一直向前走
+move_by_direction_forward 快乐的向前走
+move_by_direction_forward 一步步向前走
+move_by_direction_forward 大步大步向前走
+move_by_direction_forward 继续向前走
+move_by_direction_forward 勇敢的向前走
+move_by_direction_forward 我们一起向前走
+move_by_direction_forward 迈开大步向前走
+move_by_direction_forward 跟着我向前走
+move_by_direction_forward 径直向前走
+move_by_direction_forward 前进
+move_by_direction_forward 前进吧
+move_by_direction_forward 快速前进
+move_by_direction_forward 小薇前进
+move_by_direction_forward 小薇向前
+move_by_direction_forward 朝前走
+
+move_by_direction_left 小薇向左走
+move_by_direction_left 先向左走
+move_by_direction_left 左转
+move_by_direction_left 向左转
+move_by_direction_left 向左转弯
+move_by_direction_left 向左转大弯
+move_by_direction_left 朝左走
+move_by_direction_left 向左运动
+move_by_direction_left 向左移动
+
+move_by_direction_right 小薇向右走
+move_by_direction_right 小薇向右转
+move_by_direction_right 朝右走
+move_by_direction_right 向右运动
+move_by_direction_right 向右移动
+
+move_by_destination_person 去找小芳
+move_by_destination_person 我想找小芳
+move_by_destination_person 能带我找小芳么?
+move_by_destination_person 我想找小芳，可以带我去吗
+move_by_destination_person 你知道小芳在哪里么？我想找他
+move_by_destination_person 可以带我找小芳么？
+move_by_destination_person 你们单位有人叫小芳么，能带我找他么
+move_by_destination_person 可以带我找小芳么？
+move_by_destination_person 请问这里有人叫小芳么？我找他
+
+
+
+move_by_destination_area 小薇去前台
+move_by_destination_area 小薇去休息区
+move_by_destination_area 小薇去工作区
+move_by_destination_area 去前台吧
+move_by_destination_area 去休息区吧
+move_by_destination_area 去工作区吧
+
+
+
+
+
+
+
+
