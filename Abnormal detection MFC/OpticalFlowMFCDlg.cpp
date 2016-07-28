@@ -9,10 +9,10 @@
 
 #include <iostream>
 #include <fstream>
-#include "liblogm.h"
-#include "mclmcr.h"
-#include "matrix.h"
-#include "mclcppclass.h"
+//#include "liblogm.h"
+//#include "mclmcr.h"
+//#include "matrix.h"
+//#include "mclcppclass.h"
 #include "svm.h"
 #include "cblas.h"
 #include "opencv2\opencv.hpp"  
@@ -20,6 +20,8 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+CWinThread* pThreads = NULL;
 
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
@@ -60,7 +62,7 @@ END_MESSAGE_MAP()
 COpticalFlowMFCDlg::COpticalFlowMFCDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(COpticalFlowMFCDlg::IDD, pParent)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
 
 void COpticalFlowMFCDlg::DoDataExchange(CDataExchange* pDX)
@@ -76,6 +78,7 @@ BEGIN_MESSAGE_MAP(COpticalFlowMFCDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &COpticalFlowMFCDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCLOSE, &COpticalFlowMFCDlg::OnBnClickedClose)
 	ON_BN_CLICKED(IDC_CHECK, &COpticalFlowMFCDlg::OnBnClickedCheck)
+//	ON_MESSAGE(WM_Process, &COpticalFlowMFCDlg::OnProcess)
 END_MESSAGE_MAP()
 
 
@@ -535,20 +538,91 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 	//CWnd *pWnd = GetDlgItem(IDC_SHOW); //GetDlgItem(控件的ID)
 	//RECT rect;
 	//pWnd->GetClientRect(&rect);
+	play_flag = true;
+	pThreads = NULL;
+	pThreads = AfxBeginThread(Thread1, this, 0, 0, 0, NULL);
+	GetDlgItem(IDOK)->EnableWindow(false);
+}
 
-	int flag = GetState();
+void COpticalFlowMFCDlg::OnBnClickedCancel()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	if (pThreads == NULL)
+		return;
+
+	if (play_flag == true)
+	{
+		SuspendThread(pThreads->m_hThread);
+		play_flag = false;
+		GetDlgItem(IDCANCEL)->SetWindowTextW(_T("继续"));
+	}
+	else
+	{
+		ResumeThread(pThreads->m_hThread);
+		play_flag = true;
+		GetDlgItem(IDCANCEL)->SetWindowTextW(_T("暂停"));
+	}
+	//CDialogEx::OnCancel();
+
+}
+
+void COpticalFlowMFCDlg::OnBnClickedClose()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CDialogEx::OnCancel();
+	CDialogEx::OnClose();
+}
+
+void COpticalFlowMFCDlg::OnBnClickedCheck()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	if (IsDlgButtonChecked(IDC_CHECK) == BST_CHECKED)
+	{
+		int opt = MessageBox(_T("您选择了训练分类器，是否确定？"), _T("确定框"), MB_OKCANCEL);
+		if (opt == IDOK)
+		{
+			((CButton *)GetDlgItem(IDC_CHECK))->SetCheck(TRUE);
+			GetDlgItem(IDC_RADIO3)->SetWindowText(_T("批量训练"));
+			GetDlgItem(IDC_RADIO4)->SetWindowText(_T("在线训练"));
+		}
+		else
+		{
+			((CButton *)GetDlgItem(IDC_CHECK))->SetCheck(FALSE);
+			GetDlgItem(IDC_RADIO3)->SetWindowText(_T("默认分类器"));
+			GetDlgItem(IDC_RADIO4)->SetWindowText(_T("载入分类器"));
+		}
+	}
+	else
+	{
+		GetDlgItem(IDC_RADIO3)->SetWindowText(_T("默认分类器"));
+		GetDlgItem(IDC_RADIO4)->SetWindowText(_T("载入分类器"));
+	}
+}
+
+
+
+
+
+
+
+UINT COpticalFlowMFCDlg::Thread1(void *param)
+{
+	COpticalFlowMFCDlg *dlg = (COpticalFlowMFCDlg*)param;
+
+	int flag = dlg->GetState();
+
 	if (flag == 0)
 	{
 		AfxMessageBox(_T("请使用视频文件训练分类器！"));
-		return;
+		return 0;
 	}
 
 	cv::VideoCapture capture;
 	if (flag % 2 != 0)
 	{
 		static TCHAR BASED_CODE szFilter[] = _T("AVI Files (*.avi)|*.avi;*.AVI | RMVB Files (*.rm;*.rmvb)|*.rm;*.RM;*.rmvb;*.RMVB | MKV Files (*.mkv)|*.mkv;*.MKV| \
-			MP4 Files (*.mp4)|*.mp4;*.MP4 | WMV Files (*.wmv)|*.wmv;*.WMV | All Files (*.*)|*.*||");
-		CFileDialog fileDlg(TRUE, NULL, NULL, 0, szFilter, this);
+																																																				MP4 Files (*.mp4)|*.mp4;*.MP4 | WMV Files (*.wmv)|*.wmv;*.WMV | All Files (*.*)|*.*||");
+		CFileDialog fileDlg(TRUE, NULL, NULL, 0, szFilter, dlg);
 		if (fileDlg.DoModal() == IDOK)
 		{
 			CString strFilePath = fileDlg.GetPathName();
@@ -563,11 +637,11 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 			if (!capture.isOpened())
 			{
 				AfxMessageBox(_T("无法读取文件！"));
-				return;
+				return 0;
 			}
 		}
 		else
-			return;
+			return 0;
 	}
 	else
 	{
@@ -575,7 +649,7 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 		if (!capture.isOpened())
 		{
 			AfxMessageBox(_T("无法连接至摄像头！"));
-			return;
+			return 0;
 		}
 	}
 
@@ -583,7 +657,7 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 	if (flag == 3 || flag == 4)
 	{
 		static TCHAR BASED_CODE szFilter[] = _T("Model Files (*.proto)|*.proto;*.PROTO | All Files (*.*)|*.*||");
-		CFileDialog fileDlg(TRUE, NULL, NULL, 0, szFilter, this);
+		CFileDialog fileDlg(TRUE, NULL, NULL, 0, szFilter, dlg);
 		if (fileDlg.DoModal() == IDOK)
 		{
 			CString strModelPath = fileDlg.GetPathName();
@@ -598,11 +672,11 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 			if (!svm_p)
 			{
 				AfxMessageBox(_T("不是有效的分类器文件！"));
-				return;
+				return 0;
 			}
 		}
 		else
-			return;
+			return 0;
 	}
 	else
 	{
@@ -611,30 +685,20 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 		if (!svm_p)
 		{
 			AfxMessageBox(_T("无法加载默认分类器文件！"));
-			return;
+			return 0;
 		}
 	}
 
-
-	//if (!isInitialize)
-	//{
-	//	if (!liblogmInitialize())
-	//	{
-	//		AfxMessageBox(_T("程序无法初始化！"));
-	//		return;
-	//	}
-	//}
-
-
 	cv::Mat frame, preframe, colorframe;
 	CBitmap bitmap1, bitmap2;
-	CStatic *statusbox = (CStatic *)GetDlgItem(IDC_SHOW2);
+	CStatic *statusbox = (CStatic *)dlg->GetDlgItem(IDC_SHOW2);
 
 	if (flag <= 4)
 	{
 		bitmap1.LoadBitmap(IDB_BITMAP1);
-		while (true)
+		while (1)
 		{
+			Sleep(10);
 			capture >> colorframe;		 //读取当前帧
 			if (colorframe.empty())
 			{
@@ -643,10 +707,10 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 			}
 
 			IplImage ipl_img = colorframe;
-			DrawPicToHDC(&ipl_img, IDC_SHOW);
+			dlg->DrawPicToHDC(&ipl_img, IDC_SHOW);
 			cvtColor(colorframe, frame, CV_BGR2GRAY);
 
-			if (isAbnormal(frame, preframe, svm_p))
+			if (dlg->isAbnormal(frame, preframe, svm_p))
 				statusbox->SetBitmap(bitmap1);
 			else
 				statusbox->SetBitmap(bitmap2);
@@ -690,18 +754,19 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 		else
 			outfile.open(feaName, std::ios::app);
 
-		while (true)
+		while (1)
 		{
+			Sleep(10);
 			capture >> colorframe;		 //读取当前帧
 			if (colorframe.empty())
 				break;
 
 			IplImage ipl_img = colorframe;
-			DrawPicToHDC(&ipl_img, IDC_SHOW);
+			dlg->DrawPicToHDC(&ipl_img, IDC_SHOW);
 			cvtColor(colorframe, frame, CV_BGR2GRAY);
 
 			statusbox->SetBitmap(bitmap1);
-			calFeatureFun(frame, preframe, outfile);
+			dlg->calFeatureFun(frame, preframe, outfile);
 			frame.copyTo(preframe);
 		}
 		outfile.close();
@@ -709,7 +774,7 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 		while (1)
 		{
 			static TCHAR BASED_CODE szFilter[] = _T("Model Files (*.proto)|*.proto;*.PROTO|");
-			CFileDialog fileDlg(FALSE, _T("model"), NULL, 0, szFilter, this);
+			CFileDialog fileDlg(FALSE, _T("model"), NULL, 0, szFilter, dlg);
 			if (fileDlg.DoModal() == IDOK)
 			{
 				CString strModelPath = fileDlg.GetPathName();
@@ -731,51 +796,16 @@ void COpticalFlowMFCDlg::OnBnClickedOk()
 		AfxMessageBox(_T("训练完毕！"));
 	}
 
-	CDC *pDC = GetDlgItem(IDC_SHOW)->GetDC();
+	CDC *pDC = dlg->GetDlgItem(IDC_SHOW)->GetDC();
 	CRect rect;
-	GetDlgItem(IDC_SHOW)->GetClientRect(&rect);
+	dlg->GetDlgItem(IDC_SHOW)->GetClientRect(&rect);
 	CBrush br(GetSysColor(COLOR_BTNFACE));
 	pDC->FillRect(rect, &br);
-	ReleaseDC(pDC);
+	dlg->ReleaseDC(pDC);
 
 	statusbox->SetBitmap(bitmap2);
-}
+	dlg->GetDlgItem(IDOK)->EnableWindow(true);
+	dlg->GetDlgItem(IDCANCEL)->SetWindowTextW(_T("暂停"));
 
-void COpticalFlowMFCDlg::OnBnClickedCancel()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	CDialogEx::OnCancel();
-}
-
-void COpticalFlowMFCDlg::OnBnClickedClose()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	CDialogEx::OnCancel();
-	CDialogEx::OnClose();
-}
-
-void COpticalFlowMFCDlg::OnBnClickedCheck()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	if (IsDlgButtonChecked(IDC_CHECK) == BST_CHECKED)
-	{
-		int opt = MessageBox(_T("您选择了训练分类器，是否确定？"), _T("确定框"), MB_OKCANCEL);
-		if (opt == IDOK)
-		{
-			((CButton *)GetDlgItem(IDC_CHECK))->SetCheck(TRUE);
-			GetDlgItem(IDC_RADIO3)->SetWindowText(_T("从头训练"));
-			GetDlgItem(IDC_RADIO4)->SetWindowText(_T("继续训练"));
-		}
-		else
-		{
-			((CButton *)GetDlgItem(IDC_CHECK))->SetCheck(FALSE);
-			GetDlgItem(IDC_RADIO3)->SetWindowText(_T("默认分类器"));
-			GetDlgItem(IDC_RADIO4)->SetWindowText(_T("载入分类器"));
-		}
-	}
-	else
-	{
-		GetDlgItem(IDC_RADIO3)->SetWindowText(_T("默认分类器"));
-		GetDlgItem(IDC_RADIO4)->SetWindowText(_T("载入分类器"));
-	}
+	return 0;
 }

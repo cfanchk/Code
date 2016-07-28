@@ -34,16 +34,18 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	bool isInitialize;
+	
+	void DrawPicToHDC(IplImage *img, UINT ID);
+	void write2file(float* data, std::ofstream& outfile);
+	void copyOpticalData(const cv::Mat& flow, cv::Mat& u, cv::Mat& v);
+	void calFeature(float* matrix, svm_node* x, const float* meanVector, int product);
+	void calFeatureTrain(float* matrix, float* featureVector, const float* meanVector, int product);
+	bool isAbnormal(cv::Mat& frame, cv::Mat& preframe, svm_model* x);
+	void calFeatureFun(cv::Mat& frame, cv::Mat& preframe, std::ofstream& outfile);
+	int GetState();
 
-	afx_msg void DrawPicToHDC(IplImage *img, UINT ID);
-	afx_msg void write2file(float* data, std::ofstream& outfile);
-	afx_msg void copyOpticalData(const cv::Mat& flow, cv::Mat& u, cv::Mat& v);
-	afx_msg void calFeature(float* matrix, svm_node* x, const float* meanVector, int product);
-	afx_msg void calFeatureTrain(float* matrix, float* featureVector, const float* meanVector, int product);
-	afx_msg bool isAbnormal(cv::Mat& frame, cv::Mat& preframe, svm_model* x);
-	afx_msg void calFeatureFun(cv::Mat& frame, cv::Mat& preframe, std::ofstream& outfile);
-	afx_msg int GetState();
+	static UINT Thread1(void *param);
+	bool play_flag;
 
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedOk();
